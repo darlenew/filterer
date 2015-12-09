@@ -14,7 +14,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     @IBOutlet var imageView: UIImageView!
     
+    // secondary menu
     @IBOutlet var secondaryMenu: UIView!
+    @IBOutlet weak var redFilterButton: UIButton!
+    @IBOutlet weak var greenFilterButton: UIButton!
+    @IBOutlet weak var blueFilterButton: UIButton!
+    @IBOutlet weak var yellowFilterButton: UIButton!
+    @IBOutlet weak var purpleFilterButton: UIButton!
+    
     @IBOutlet var bottomMenu: UIView!
     
     @IBOutlet var filterButton: UIButton!
@@ -115,6 +122,18 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 }
         }
     }
+    
+    @IBAction func onFilterRed(sender: AnyObject) {
+        // apply the red filter to the image
+        print("red")
+        
+        var rgbaImage = RGBAImage(image: imageView.image!)
+        var filter = FilterRed()
+        let filtered: RGBAImage = filter.run(rgbaImage!)
+        imageView.image = filtered.toUIImage()
+        
+    }
+    
 
 }
 
