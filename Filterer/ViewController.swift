@@ -2,6 +2,7 @@
 //  ViewController.swift
 //  Filterer
 //
+//  Modified by darlene.py@gmail.com on Dec 9, 2015.
 //  Created by Jack on 2015-09-22.
 //  Copyright © 2015 UofT. All rights reserved.
 //
@@ -31,12 +32,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     // save filtered images
     var originalImage: UIImage!
     var currentImage: UIImage! // might be the original or the filtered image
-//    
-//    var redFiltered: UIImage!
-//    var greenFiltered: UIImage!
-//    var blueFiltered: UIImage!
-//    var yellowFiltered: UIImage!
-//    var purpleFiltered: UIImage!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,6 +84,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
             imageView.image = image // display the selected image
             originalImage = imageView.image // save the selected image for comparing against
+            compareButton.enabled = false // disable comparisons until the image is filtered
         }
     }
     
@@ -147,6 +143,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         let filter = FilterRed()
         let filtered: RGBAImage = filter.run(rgbaImage!)
         imageView.image = filtered.toUIImage()
+        compareButton.enabled = true
     }
     
     @IBAction func compareOriginal(sender: AnyObject) {
