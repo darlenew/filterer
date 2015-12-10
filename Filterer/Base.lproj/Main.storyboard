@@ -51,6 +51,10 @@
                                                     <constraint firstAttribute="height" constant="44" id="zgf-3k-aR7"/>
                                                 </constraints>
                                                 <state key="normal" title="Compare"/>
+                                                <connections>
+                                                    <action selector="compareFiltered:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dQa-47-t9L"/>
+                                                    <action selector="compareOriginal:" destination="BYZ-38-t0r" eventType="touchDown" id="jCU-7p-mjm"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Leg-ry-Zqw">
                                                 <rect key="frame" x="450" y="0.0" width="150" height="44"/>
@@ -97,12 +101,14 @@
                     <connections>
                         <outlet property="blueFilterButton" destination="sNq-be-bSy" id="3gs-Wu-DrY"/>
                         <outlet property="bottomMenu" destination="JNF-wb-wwY" id="jTm-2q-PDu"/>
+                        <outlet property="compareButton" destination="tPg-2N-f93" id="2Zg-kj-kEc"/>
                         <outlet property="filterButton" destination="C6B-1F-j0K" id="6Kf-1q-zun"/>
                         <outlet property="greenFilterButton" destination="axt-GK-a6m" id="eXl-Xj-0Xq"/>
                         <outlet property="imageView" destination="aND-Em-4Dd" id="vbi-rB-DhQ"/>
                         <outlet property="purpleFilterButton" destination="7P8-VM-YCw" id="XRF-T7-cAe"/>
                         <outlet property="redFilterButton" destination="Drk-Kp-614" id="YJm-yc-UdK"/>
                         <outlet property="secondaryMenu" destination="ePS-oG-ZHP" id="Be7-JW-Iwe"/>
+                        <outlet property="shareButton" destination="Leg-ry-Zqw" id="wgf-NZ-tJm"/>
                         <outlet property="yellowFilterButton" destination="zUq-ef-bpc" id="rnK-2E-Ghb"/>
                     </connections>
                 </viewController>

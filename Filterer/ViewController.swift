@@ -14,6 +14,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     @IBOutlet var imageView: UIImageView!
     
+    // main menu
+    @IBOutlet var bottomMenu: UIView!
+    @IBOutlet var filterButton: UIButton!
+    @IBOutlet weak var compareButton: UIButton!
+    @IBOutlet weak var shareButton: UIButton!
+    
     // secondary menu
     @IBOutlet var secondaryMenu: UIView!
     @IBOutlet weak var redFilterButton: UIButton!
@@ -22,9 +28,15 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var yellowFilterButton: UIButton!
     @IBOutlet weak var purpleFilterButton: UIButton!
     
-    @IBOutlet var bottomMenu: UIView!
-    
-    @IBOutlet var filterButton: UIButton!
+    // save filtered images
+    var originalImage: UIImage!
+    var currentImage: UIImage! // might be the original or the filtered image
+//    
+//    var redFiltered: UIImage!
+//    var greenFiltered: UIImage!
+//    var blueFiltered: UIImage!
+//    var yellowFiltered: UIImage!
+//    var purpleFiltered: UIImage!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,7 +87,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         dismissViewControllerAnimated(true, completion: nil)
         if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
-            imageView.image = image
+            imageView.image = image // display the selected image
+            originalImage = imageView.image // save the selected image for comparing against
         }
     }
     
@@ -89,6 +102,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             hideSecondaryMenu()
             sender.selected = false
         } else {
+            // save the original image, if it hasn't been saved already
+            // this may be the case when initially loading the app using the default image
+            if originalImage == nil {
+                originalImage = imageView.image!
+            }
             showSecondaryMenu()
             sender.selected = true
         }
@@ -125,15 +143,26 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     @IBAction func onFilterRed(sender: AnyObject) {
         // apply the red filter to the image
-        print("red")
-        
-        var rgbaImage = RGBAImage(image: imageView.image!)
-        var filter = FilterRed()
+        let rgbaImage = RGBAImage(image: imageView.image!)
+        let filter = FilterRed()
         let filtered: RGBAImage = filter.run(rgbaImage!)
         imageView.image = filtered.toUIImage()
-        
     }
     
+    @IBAction func compareOriginal(sender: AnyObject) {
+        // the compare button is being held down, peek at the original image
+        print("compare to original")
+        print(imageView.image)
+        currentImage = imageView.image
+        imageView.image = originalImage
+    }
 
+    @IBAction func compareFiltered(sender: AnyObject) {
+        // the compare button was being held down, but is now let go, 
+        // so revert to filtered image
+        print("compare to filtered")
+        imageView.image = currentImage
+    }
+    
 }
 
