@@ -173,14 +173,26 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
     }
     
+    func crossFadeToImage(image: UIImage) {
+        // crossfade to this image
+        // based on http://stackoverflow.com/questions/7638831/fade-dissolve-when-changing-uiimageviews-image
+        UIView.transitionWithView(imageView,
+            duration:1,
+            options: UIViewAnimationOptions.TransitionCrossDissolve,
+            animations: { self.imageView.image = image},
+            completion: nil)
+    }
+    
     @IBAction func onFilterRed(sender: AnyObject) {
         // apply the red filter to the image
         let rgbaImage = RGBAImage(image: imageView.image!)
         let filter = FilterRed()
         let filtered: RGBAImage = filter.run(rgbaImage!)
-        imageView.image = filtered.toUIImage()
-        compareButton.enabled = true
-        originalImage = addTextToImage("original", inImage: originalImage, atPoint: CGPointMake(20, 20))
+        if let image = filtered.toUIImage() {
+            crossFadeToImage(image)
+            self.compareButton.enabled = true
+            self.originalImage = addTextToImage("original", inImage: originalImage, atPoint: CGPointMake(20, 20))
+        }
     }
     
     @IBAction func compareOriginal(sender: AnyObject) {
@@ -188,14 +200,15 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         print("compare to original")
         print(imageView.image)
         currentImage = imageView.image
-        imageView.image = originalImage
+        crossFadeToImage(originalImage)
+        
     }
 
     @IBAction func compareFiltered(sender: AnyObject) {
         // the compare button was being held down, but is now let go, 
         // so revert to filtered image
         print("compare to filtered")
-        imageView.image = currentImage
+        crossFadeToImage(currentImage)
     }
     
 }
