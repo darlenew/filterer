@@ -18,6 +18,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     // main menu
     @IBOutlet var bottomMenu: UIView!
     @IBOutlet var filterButton: UIButton!
+    @IBOutlet weak var editButton: UIButton!
     @IBOutlet weak var compareButton: UIButton!
     @IBOutlet weak var shareButton: UIButton!
     
@@ -28,6 +29,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var blueFilterButton: UIButton!
     @IBOutlet weak var yellowFilterButton: UIButton!
     @IBOutlet weak var purpleFilterButton: UIButton!
+    var secondaryMenuConstraints = [NSLayoutConstraint]()
+    
+    // slider menu
+    @IBOutlet var sliderMenu: UIView!
+    @IBOutlet weak var intensitySlider: UISlider!
+    var sliderMenuConstraints = [NSLayoutConstraint]()
     
     // save filtered images
     var originalImage: UIImage!
@@ -37,6 +44,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         super.viewDidLoad()
         secondaryMenu.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.5)
         secondaryMenu.translatesAutoresizingMaskIntoConstraints = false
+        sliderMenu.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.5)
+        sliderMenu.translatesAutoresizingMaskIntoConstraints = false
+
     }
 
     // from http://stackoverflow.com/questions/28906914/how-do-i-add-text-to-an-image-in-ios-swift
@@ -114,13 +124,20 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         presentViewController(cameraPicker, animated: true, completion: nil)
     }
     
+    func setupNewImage(image: UIImage) {
+        // got a new image to filter, update state
+        imageView.image = image // display the selected image
+        originalImage = imageView.image // save the selected image for comparing against
+        // disable comparisons and edits until image is filtered
+        compareButton.enabled = false
+        editButton.enabled = false
+    }
+    
     // MARK: UIImagePickerControllerDelegate
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         dismissViewControllerAnimated(true, completion: nil)
         if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
-            imageView.image = image // display the selected image
-            originalImage = imageView.image // save the selected image for comparing against
-            compareButton.enabled = false // disable comparisons until the image is filtered
+            setupNewImage(image)
         }
     }
     
@@ -144,6 +161,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
     }
     
+    //
+    // secondary menu
+    //
+    
     func showSecondaryMenu() {
         view.addSubview(secondaryMenu)
         
@@ -153,7 +174,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         let heightConstraint = secondaryMenu.heightAnchor.constraintEqualToConstant(44)
         
-        NSLayoutConstraint.activateConstraints([bottomConstraint, leftConstraint, rightConstraint, heightConstraint])
+        secondaryMenuConstraints = [bottomConstraint, leftConstraint, rightConstraint, heightConstraint]
+        NSLayoutConstraint.activateConstraints(secondaryMenuConstraints)
         
         view.layoutIfNeeded()
         
@@ -164,6 +186,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
 
     func hideSecondaryMenu() {
+        print("hide secondary")
+        NSLayoutConstraint.deactivateConstraints(secondaryMenuConstraints)
+
         UIView.animateWithDuration(0.4, animations: {
             self.secondaryMenu.alpha = 0
             }) { completed in
@@ -171,6 +196,53 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                     self.secondaryMenu.removeFromSuperview()
                 }
         }
+    }
+    
+    //
+    // slider menu
+    //
+    
+    func showSliderMenu() {
+        // show slider menu for editing the filter parameter
+        print("show slider")
+        view.addSubview(sliderMenu)
+        
+        
+        let bottomConstraint = sliderMenu.bottomAnchor.constraintEqualToAnchor(bottomMenu.topAnchor)
+        print(bottomConstraint)
+        let leftConstraint = sliderMenu.leftAnchor.constraintEqualToAnchor(view.leftAnchor)
+        print(leftConstraint)
+        let rightConstraint = sliderMenu.rightAnchor.constraintEqualToAnchor(view.rightAnchor)
+        print(rightConstraint)
+        
+        let heightConstraint = sliderMenu.heightAnchor.constraintEqualToConstant(44)
+        print(heightConstraint)
+        
+        sliderMenuConstraints = [bottomConstraint, leftConstraint, rightConstraint, heightConstraint]
+        NSLayoutConstraint.activateConstraints(sliderMenuConstraints)
+        
+
+        view.layoutIfNeeded()
+        
+        self.sliderMenu.alpha = 0
+        UIView.animateWithDuration(0.4) {
+            self.sliderMenu.alpha = 1.0
+        }
+
+        print(intensitySlider.frame)
+    }
+    
+    func hideSliderMenu() {
+        // hide slider menu
+        print("hide slider")
+//        NSLayoutConstraint.deactivateConstraints(sliderMenuConstraints)
+//        UIView.animateWithDuration(0.4, animations: {
+//            self.sliderMenu.alpha = 0
+//            }) { completed in
+//                if completed == true {
+//                    self.sliderMenu.removeFromSuperview()
+//                }
+//        }
     }
     
     func crossFadeToImage(image: UIImage) {
@@ -182,6 +254,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             animations: { self.imageView.image = image},
             completion: nil)
     }
+
+    func onFilterComplete() {
+        // image filtering completed, update image and menus
+        self.compareButton.enabled = true
+        self.editButton.enabled = true
+        self.originalImage = addTextToImage("original", inImage: originalImage, atPoint: CGPointMake(20, 20))
+        self.editButton.enabled = true
+    }
     
     @IBAction func onFilterRed(sender: AnyObject) {
         // apply the red filter to the image
@@ -190,10 +270,19 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         let filtered: RGBAImage = filter.run(rgbaImage!)
         if let image = filtered.toUIImage() {
             crossFadeToImage(image)
-            self.compareButton.enabled = true
-            self.originalImage = addTextToImage("original", inImage: originalImage, atPoint: CGPointMake(20, 20))
+            onFilterComplete()
         }
     }
+    
+    @IBAction func onEdit(sender: AnyObject) {
+        // edit button pressed
+        hideSecondaryMenu()
+        showSliderMenu()
+    }
+    
+    //
+    // compare
+    // 
     
     @IBAction func compareOriginal(sender: AnyObject) {
         // the compare button is being held down, peek at the original image

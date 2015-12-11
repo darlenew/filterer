@@ -23,7 +23,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kPg-yq-mNp">
-                                                <rect key="frame" x="0.0" y="0.0" width="150" height="44"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="120" height="44"/>
                                                 <animations/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="Qiv-OS-HEF"/>
@@ -34,7 +34,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C6B-1F-j0K">
-                                                <rect key="frame" x="150" y="0.0" width="150" height="44"/>
+                                                <rect key="frame" x="120" y="0.0" width="120" height="44"/>
                                                 <animations/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="9TF-bC-3of"/>
@@ -44,8 +44,19 @@
                                                     <action selector="onFilter:" destination="BYZ-38-t0r" eventType="touchUpInside" id="bde-Ke-RWf"/>
                                                 </connections>
                                             </button>
+                                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Leg-ry-Zqw">
+                                                <rect key="frame" x="240" y="0.0" width="120" height="44"/>
+                                                <animations/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="44" id="IZl-Nh-MXv"/>
+                                                </constraints>
+                                                <state key="normal" title="Edit"/>
+                                                <connections>
+                                                    <action selector="onEdit:" destination="BYZ-38-t0r" eventType="touchUpInside" id="L8L-i6-aTf"/>
+                                                </connections>
+                                            </button>
                                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tPg-2N-f93">
-                                                <rect key="frame" x="300" y="0.0" width="150" height="44"/>
+                                                <rect key="frame" x="360" y="0.0" width="120" height="44"/>
                                                 <animations/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="zgf-3k-aR7"/>
@@ -56,15 +67,15 @@
                                                     <action selector="compareOriginal:" destination="BYZ-38-t0r" eventType="touchDown" id="jCU-7p-mjm"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Leg-ry-Zqw">
-                                                <rect key="frame" x="450" y="0.0" width="150" height="44"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0IJ-RD-tdy">
+                                                <rect key="frame" x="480" y="0.0" width="120" height="44"/>
                                                 <animations/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="44" id="IZl-Nh-MXv"/>
+                                                    <constraint firstAttribute="height" constant="44" id="jaD-j3-yWK"/>
                                                 </constraints>
                                                 <state key="normal" title="Share"/>
                                                 <connections>
-                                                    <action selector="onShare:" destination="BYZ-38-t0r" eventType="touchUpInside" id="zdD-sP-cQ3"/>
+                                                    <action selector="onShare:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Ea0-JA-Apa"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -102,13 +113,15 @@
                         <outlet property="blueFilterButton" destination="sNq-be-bSy" id="3gs-Wu-DrY"/>
                         <outlet property="bottomMenu" destination="JNF-wb-wwY" id="jTm-2q-PDu"/>
                         <outlet property="compareButton" destination="tPg-2N-f93" id="2Zg-kj-kEc"/>
-                        <outlet property="filterButton" destination="C6B-1F-j0K" id="6Kf-1q-zun"/>
+                        <outlet property="editButton" destination="Leg-ry-Zqw" id="ft0-O6-9h7"/>
+                        <outlet property="filterButton" destination="Leg-ry-Zqw" id="hrD-Gw-VRL"/>
                         <outlet property="greenFilterButton" destination="axt-GK-a6m" id="eXl-Xj-0Xq"/>
                         <outlet property="imageView" destination="aND-Em-4Dd" id="vbi-rB-DhQ"/>
+                        <outlet property="intensitySlider" destination="EiB-r2-Htn" id="xez-aD-xh6"/>
                         <outlet property="purpleFilterButton" destination="7P8-VM-YCw" id="XRF-T7-cAe"/>
                         <outlet property="redFilterButton" destination="Drk-Kp-614" id="YJm-yc-UdK"/>
                         <outlet property="secondaryMenu" destination="ePS-oG-ZHP" id="Be7-JW-Iwe"/>
-                        <outlet property="shareButton" destination="Leg-ry-Zqw" id="wgf-NZ-tJm"/>
+                        <outlet property="sliderMenu" destination="B9B-iP-V5C" id="ehC-Lg-c4x"/>
                         <outlet property="yellowFilterButton" destination="zUq-ef-bpc" id="rnK-2E-Ghb"/>
                     </connections>
                 </viewController>
@@ -159,6 +172,24 @@
                         <constraint firstAttribute="bottom" secondItem="n3M-NR-6VP" secondAttribute="bottom" id="IFa-Q5-UOE"/>
                         <constraint firstItem="n3M-NR-6VP" firstAttribute="top" secondItem="ePS-oG-ZHP" secondAttribute="top" id="ciD-QT-Tl9"/>
                         <constraint firstItem="n3M-NR-6VP" firstAttribute="leading" secondItem="ePS-oG-ZHP" secondAttribute="leading" id="uEa-cd-VyS"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" placeholderIntrinsicWidth="240" placeholderIntrinsicHeight="128" id="B9B-iP-V5C">
+                    <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <slider opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="EiB-r2-Htn">
+                            <rect key="frame" x="6" y="11" width="228" height="107"/>
+                            <animations/>
+                        </slider>
+                    </subviews>
+                    <animations/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="EiB-r2-Htn" secondAttribute="bottom" constant="22" id="40Z-PA-uF7"/>
+                        <constraint firstAttribute="trailing" secondItem="EiB-r2-Htn" secondAttribute="trailing" constant="20" id="GHs-cJ-Lse"/>
+                        <constraint firstItem="EiB-r2-Htn" firstAttribute="top" secondItem="B9B-iP-V5C" secondAttribute="top" constant="22" id="IY2-eJ-Yqc"/>
+                        <constraint firstItem="EiB-r2-Htn" firstAttribute="leading" secondItem="B9B-iP-V5C" secondAttribute="leading" constant="20" id="XwW-SK-SdJ"/>
                     </constraints>
                 </view>
             </objects>
