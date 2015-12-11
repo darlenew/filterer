@@ -39,6 +39,42 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         secondaryMenu.translatesAutoresizingMaskIntoConstraints = false
     }
 
+    // from http://stackoverflow.com/questions/28906914/how-do-i-add-text-to-an-image-in-ios-swift
+    func addTextToImage(drawText: NSString, inImage: UIImage, atPoint:CGPoint)->UIImage{
+        
+        // Setup the font specific variables
+        var textColor: UIColor = UIColor.whiteColor()
+        var textFont: UIFont = UIFont(name: "Helvetica Bold", size: 12)!
+        
+        //Setup the image context using the passed image.
+        UIGraphicsBeginImageContext(inImage.size)
+        
+        //Setups up the font attributes that will be later used to dictate how the text should be drawn
+        let textFontAttributes = [
+            NSFontAttributeName: textFont,
+            NSForegroundColorAttributeName: textColor,
+        ]
+        
+        //Put the image into a rectangle as large as the original image.
+        inImage.drawInRect(CGRectMake(0, 0, inImage.size.width, inImage.size.height))
+        
+        // Creating a point within the space that is as bit as the image.
+        var rect: CGRect = CGRectMake(atPoint.x, atPoint.y, inImage.size.width, inImage.size.height)
+        
+        //Now Draw the text into an image.
+        drawText.drawInRect(rect, withAttributes: textFontAttributes)
+        
+        // Create a new image out of the images we have created
+        var newImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()
+        
+        // End the context now that we have the image we need
+        UIGraphicsEndImageContext()
+        
+        //And pass it back up to the caller.
+        return newImage
+        
+    }
+    
     // MARK: Share
     @IBAction func onShare(sender: AnyObject) {
         let activityController = UIActivityViewController(activityItems: ["Check out our really cool app", imageView.image!], applicationActivities: nil)
@@ -144,6 +180,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         let filtered: RGBAImage = filter.run(rgbaImage!)
         imageView.image = filtered.toUIImage()
         compareButton.enabled = true
+        originalImage = addTextToImage("original", inImage: originalImage, atPoint: CGPointMake(20, 20))
     }
     
     @IBAction func compareOriginal(sender: AnyObject) {
