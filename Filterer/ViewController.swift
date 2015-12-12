@@ -53,6 +53,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         sliderMenu.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.5)
         sliderMenu.translatesAutoresizingMaskIntoConstraints = false
 
+        // set up imageView to recognize long presses
+        let longPressRecognizer = UILongPressGestureRecognizer(target:self, action: "imageViewLongPressed:")
+        imageView.userInteractionEnabled = true
+        imageView.addGestureRecognizer(longPressRecognizer)
     }
 
     // from http://stackoverflow.com/questions/28906914/how-do-i-add-text-to-an-image-in-ios-swift
@@ -317,21 +321,39 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     // compare
     // 
     
+    func doStartCompare() {
+        // compare to original image, if one exists
+        if let original = originalImage {
+            currentImage = imageView.image
+            crossFadeToImage(original)
+        }
+    }
+    
+    func doEndCompare() {
+        // comparison is done.  if there was an original image, 
+        // revert to the current image.
+        if let _ = originalImage {
+            crossFadeToImage(currentImage)
+        }
+    }
+    
     @IBAction func compareOriginal(sender: AnyObject) {
         // the compare button is being held down, peek at the original image
-        print("compare to original")
-        print(imageView.image)
-        currentImage = imageView.image
-        crossFadeToImage(originalImage)
-        
+        doStartCompare()
     }
 
     @IBAction func compareFiltered(sender: AnyObject) {
         // the compare button was being held down, but is now let go, 
         // so revert to filtered image
-        print("compare to filtered")
-        crossFadeToImage(currentImage)
+        doEndCompare()
     }
     
+    func imageViewLongPressed(longPress: UIGestureRecognizer) {
+        if (longPress.state == UIGestureRecognizerState.Ended) {
+            doEndCompare()
+        }else if (longPress.state == UIGestureRecognizerState.Began) {
+            doStartCompare()
+        }
+    }
 }
 
