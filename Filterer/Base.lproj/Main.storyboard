@@ -178,9 +178,12 @@
                     <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <slider opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="EiB-r2-Htn">
+                        <slider opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="20" translatesAutoresizingMaskIntoConstraints="NO" id="EiB-r2-Htn">
                             <rect key="frame" x="6" y="11" width="228" height="107"/>
                             <animations/>
+                            <connections>
+                                <action selector="onSliderTouchUpInside:" destination="BYZ-38-t0r" eventType="touchUpInside" id="fhr-dk-Efw"/>
+                            </connections>
                         </slider>
                     </subviews>
                     <animations/>

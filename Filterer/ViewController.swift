@@ -39,6 +39,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     // save filtered images
     var originalImage: UIImage!
     var currentImage: UIImage! // might be the original or the filtered image
+    var filterName: String!
+    var filterMap = ["B/W": FilterGrayscale.self,
+                      "More Contrast": FilterIncreaseContrast.self,
+                      "More Red": FilterRed.self,
+                      "Black and White and Red All Over": FilterRedGrayscale.self,
+                     ]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -126,9 +132,16 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     func setupNewImage(image: UIImage) {
         // got a new image to filter, update state
+        print("updating state")
+        hideSecondaryMenu()
+        hideSliderMenu()
+
         imageView.image = image // display the selected image
         originalImage = imageView.image // save the selected image for comparing against
         // disable comparisons and edits until image is filtered
+        filterButton.selected = false
+        filterButton.highlighted = false
+        filterButton.enabled = false
         compareButton.enabled = false
         editButton.enabled = false
     }
@@ -147,6 +160,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     // MARK: Filter Menu
     @IBAction func onFilter(sender: UIButton) {
+        print(sender)
         if (sender.selected) {
             hideSecondaryMenu()
             sender.selected = false
@@ -235,14 +249,32 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func hideSliderMenu() {
         // hide slider menu
         print("hide slider")
-//        NSLayoutConstraint.deactivateConstraints(sliderMenuConstraints)
-//        UIView.animateWithDuration(0.4, animations: {
-//            self.sliderMenu.alpha = 0
-//            }) { completed in
-//                if completed == true {
-//                    self.sliderMenu.removeFromSuperview()
-//                }
-//        }
+        NSLayoutConstraint.deactivateConstraints(sliderMenuConstraints)
+        UIView.animateWithDuration(0.4, animations: {
+            self.sliderMenu.alpha = 0
+            }) { completed in
+                if completed == true {
+                    self.sliderMenu.removeFromSuperview()
+                }
+        }
+    }
+    
+    @IBAction func onSliderTouchUpInside(sender: AnyObject) {
+        print("onSliderTouchUpInside")
+        print(self.intensitySlider.value)
+        print(self.filterName)
+        let intensity = self.intensitySlider.value * 100
+        var filter: FilterBase
+        if self.filterName == "More Red" {
+            print("make it redder")
+            filter = FilterRed(intensity: Double(intensity))
+            let rgbaImage = RGBAImage(image: imageView.image!)
+            let filtered = filter.run(rgbaImage!)
+            if let image = filtered.toUIImage() {
+                print("updating image")
+                crossFadeToImage(image)
+            }
+        }
     }
     
     func crossFadeToImage(image: UIImage) {
@@ -266,6 +298,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBAction func onFilterRed(sender: AnyObject) {
         // apply the red filter to the image
         let rgbaImage = RGBAImage(image: imageView.image!)
+        self.filterName = "More Red"
         let filter = FilterRed()
         let filtered: RGBAImage = filter.run(rgbaImage!)
         if let image = filtered.toUIImage() {
