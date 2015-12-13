@@ -76,8 +76,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func addTextToImage(drawText: NSString, inImage: UIImage, atPoint:CGPoint)->UIImage{
         
         // Setup the font specific variables
-        var textColor: UIColor = UIColor.whiteColor()
-        var textFont: UIFont = UIFont(name: "Helvetica Bold", size: 18)!
+        let textColor: UIColor = UIColor.purpleColor()
+        // calculate the overlay font size, otherwise for high-res images it will be too small,
+        // and for low-res images it will be too huge.
+        let fontSize: Int = Int(floorf(Float(inImage.size.width) / 5.0))
+        let textFont: UIFont = UIFont(name: "Helvetica Bold", size: CGFloat(fontSize))!
         
         //Setup the image context using the passed image.
         UIGraphicsBeginImageContext(inImage.size)
@@ -93,13 +96,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         inImage.drawInRect(CGRectMake(0, 0, inImage.size.width, inImage.size.height))
         
         // Creating a point within the space that is as bit as the image.
-        var rect: CGRect = CGRectMake(atPoint.x, atPoint.y, inImage.size.width, inImage.size.height)
+        let rect: CGRect = CGRectMake(atPoint.x, atPoint.y, inImage.size.width, inImage.size.height)
         
         //Now Draw the text into an image.
         drawText.drawInRect(rect, withAttributes: textFontAttributes)
         
         // Create a new image out of the images we have created
-        var newImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()
+        let newImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()
         
         // End the context now that we have the image we need
         UIGraphicsEndImageContext()
@@ -326,8 +329,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     func applyFilter(filter: FilterBase) {
         // apply the filter to the original image
-        if originalImage == nil {
-            originalImage = imageView.image!
+        if self.originalImage == nil {
+            self.originalImage = imageView.image!
         }
         if let rgbaImage = RGBAImage(image: originalImage) {
             let filtered = filter.run(rgbaImage)
@@ -374,11 +377,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     // 
     
     func doStartCompare() {
+        print("startcompare")
         // compare to original image, if one exists
-        if let original = originalImage {
+        if let original = self.originalImage {
             currentImage = imageView.image
             // add a "original" label to the image before displaying
-            let labeledImage = addTextToImage("original", inImage: original, atPoint: CGPointMake(20, 20))
+            let labeledImage = addTextToImage("original", inImage: original, atPoint: CGPointMake(0, 0))
             crossFadeToImage(labeledImage)
         }
     }
@@ -386,7 +390,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func doEndCompare() {
         // comparison is done.  if there was an original image, 
         // revert to the current image.
-        if let _ = originalImage {
+        if let _ = self.originalImage {
             crossFadeToImage(currentImage)
         }
     }
