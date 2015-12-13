@@ -12,6 +12,10 @@
 		29331F211C181F9F00733B7B /* FilterIncreaseContrast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29331F1C1C181F9F00733B7B /* FilterIncreaseContrast.swift */; };
 		29331F221C181F9F00733B7B /* FilterGrayscale.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29331F1D1C181F9F00733B7B /* FilterGrayscale.swift */; };
 		29331F231C181F9F00733B7B /* FilterBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29331F1E1C181F9F00733B7B /* FilterBase.swift */; };
+		29331F2A1C1CD9EF00733B7B /* loom0.png in Resources */ = {isa = PBXBuildFile; fileRef = 29331F261C1CD9EF00733B7B /* loom0.png */; };
+		29331F2B1C1CD9EF00733B7B /* loom1.png in Resources */ = {isa = PBXBuildFile; fileRef = 29331F271C1CD9EF00733B7B /* loom1.png */; };
+		29331F2C1C1CD9EF00733B7B /* loom2.png in Resources */ = {isa = PBXBuildFile; fileRef = 29331F281C1CD9EF00733B7B /* loom2.png */; };
+		29331F2D1C1CD9EF00733B7B /* loom3.png in Resources */ = {isa = PBXBuildFile; fileRef = 29331F291C1CD9EF00733B7B /* loom3.png */; };
 		4DC199981BB201E100AA75E7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC199971BB201E100AA75E7 /* AppDelegate.swift */; };
 		4DC1999A1BB201E100AA75E7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC199991BB201E100AA75E7 /* ViewController.swift */; };
 		4DC1999D1BB201E100AA75E7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4DC1999B1BB201E100AA75E7 /* Main.storyboard */; };
@@ -26,6 +30,10 @@
 		29331F1C1C181F9F00733B7B /* FilterIncreaseContrast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterIncreaseContrast.swift; sourceTree = "<group>"; };
 		29331F1D1C181F9F00733B7B /* FilterGrayscale.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterGrayscale.swift; sourceTree = "<group>"; };
 		29331F1E1C181F9F00733B7B /* FilterBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterBase.swift; sourceTree = "<group>"; };
+		29331F261C1CD9EF00733B7B /* loom0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loom0.png; sourceTree = "<group>"; };
+		29331F271C1CD9EF00733B7B /* loom1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loom1.png; sourceTree = "<group>"; };
+		29331F281C1CD9EF00733B7B /* loom2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loom2.png; sourceTree = "<group>"; };
+		29331F291C1CD9EF00733B7B /* loom3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loom3.png; sourceTree = "<group>"; };
 		4DC199941BB201E100AA75E7 /* Filterer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Filterer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DC199971BB201E100AA75E7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4DC199991BB201E100AA75E7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -68,6 +76,10 @@
 			children = (
 				4DC199971BB201E100AA75E7 /* AppDelegate.swift */,
 				4DC199991BB201E100AA75E7 /* ViewController.swift */,
+				29331F261C1CD9EF00733B7B /* loom0.png */,
+				29331F271C1CD9EF00733B7B /* loom1.png */,
+				29331F281C1CD9EF00733B7B /* loom2.png */,
+				29331F291C1CD9EF00733B7B /* loom3.png */,
 				4DC199A91BB2049F00AA75E7 /* RGBAImage.swift */,
 				29331F1A1C181F9F00733B7B /* FilterRedGrayscale.swift */,
 				29331F1B1C181F9F00733B7B /* FilterRed.swift */,
@@ -139,9 +151,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				29331F2A1C1CD9EF00733B7B /* loom0.png in Resources */,
 				4DC199A21BB201E100AA75E7 /* LaunchScreen.storyboard in Resources */,
 				4DC1999F1BB201E100AA75E7 /* Assets.xcassets in Resources */,
 				4DC1999D1BB201E100AA75E7 /* Main.storyboard in Resources */,
+				29331F2B1C1CD9EF00733B7B /* loom1.png in Resources */,
+				29331F2D1C1CD9EF00733B7B /* loom3.png in Resources */,
+				29331F2C1C1CD9EF00733B7B /* loom2.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

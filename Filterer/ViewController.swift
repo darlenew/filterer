@@ -28,7 +28,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var greenFilterButton: UIButton!
     @IBOutlet weak var blueFilterButton: UIButton!
     @IBOutlet weak var yellowFilterButton: UIButton!
-    @IBOutlet weak var purpleFilterButton: UIButton!
     var secondaryMenuConstraints = [NSLayoutConstraint]()
     
     // slider menu
@@ -41,10 +40,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var currentImage: UIImage! // might be the original or the filtered image
     var filterName: String!
     var filterMap = ["B/W": FilterGrayscale.self,
-                      "More Contrast": FilterIncreaseContrast.self,
-                      "More Red": FilterRed.self,
-                      "Black and White and Red All Over": FilterRedGrayscale.self,
+                      "Contrast": FilterIncreaseContrast.self,
+                      "Red": FilterRed.self,
+                      "RedGrayscale": FilterRedGrayscale.self,
                      ]
+    
+    // overlay view
+    var overlay: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,9 +56,20 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         sliderMenu.translatesAutoresizingMaskIntoConstraints = false
 
         // set up imageView to recognize long presses
-        let longPressRecognizer = UILongPressGestureRecognizer(target:self, action: "imageViewLongPressed:")
-        imageView.userInteractionEnabled = true
-        imageView.addGestureRecognizer(longPressRecognizer)
+        let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: "overlayLongPressed:")
+        imageView.userInteractionEnabled = false
+        
+        // set up overlay view to limit the gesture recognizing region
+        // direct math on CGFloats is kinda screwy
+        // http://stackoverflow.com/questions/18422389/unexpected-result-when-subtracting-two-floats-defined-as-constants
+        overlay = UIView(frame: CGRectMake(0, 0, self.imageView.frame.size.width, CGFloat(self.view.frame.size.height - 88)))
+        overlay.userInteractionEnabled = true
+        overlay.opaque = false
+        overlay.backgroundColor = UIColor(white:1, alpha: 0)
+        overlay.addGestureRecognizer(longPressRecognizer)
+        self.view.addSubview(overlay)
+        
+        print(filterButton.state)
     }
 
     // from http://stackoverflow.com/questions/28906914/how-do-i-add-text-to-an-image-in-ios-swift
@@ -64,7 +77,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         // Setup the font specific variables
         var textColor: UIColor = UIColor.whiteColor()
-        var textFont: UIFont = UIFont(name: "Helvetica Bold", size: 12)!
+        var textFont: UIFont = UIFont(name: "Helvetica Bold", size: 24)!
         
         //Setup the image context using the passed image.
         UIGraphicsBeginImageContext(inImage.size)
@@ -73,6 +86,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         let textFontAttributes = [
             NSFontAttributeName: textFont,
             NSForegroundColorAttributeName: textColor,
+
         ]
         
         //Put the image into a rectangle as large as the original image.
@@ -141,11 +155,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         hideSliderMenu()
 
         imageView.image = image // display the selected image
-        originalImage = imageView.image // save the selected image for comparing against
+        self.originalImage = image // save the selected image for comparing against
         // disable comparisons and edits until image is filtered
-        filterButton.selected = false
-        filterButton.highlighted = false
-        filterButton.enabled = false
         compareButton.enabled = false
         editButton.enabled = false
     }
@@ -184,6 +195,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     //
     
     func showSecondaryMenu() {
+        print(filterButton.state)
+        print(filterButton)
+        hideSliderMenu()
         view.addSubview(secondaryMenu)
         
         let bottomConstraint = secondaryMenu.bottomAnchor.constraintEqualToAnchor(bottomMenu.topAnchor)
@@ -195,17 +209,23 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         secondaryMenuConstraints = [bottomConstraint, leftConstraint, rightConstraint, heightConstraint]
         NSLayoutConstraint.activateConstraints(secondaryMenuConstraints)
         
-        view.layoutIfNeeded()
+
         
         self.secondaryMenu.alpha = 0
         UIView.animateWithDuration(0.4) {
             self.secondaryMenu.alpha = 1.0
         }
+        
+        view.layoutIfNeeded()
     }
 
     func hideSecondaryMenu() {
+        print(filterButton.state)
+        print(filterButton)
         print("hide secondary")
-        NSLayoutConstraint.deactivateConstraints(secondaryMenuConstraints)
+        if !self.secondaryMenu.isDescendantOfView(view) {
+            return
+        }
 
         UIView.animateWithDuration(0.4, animations: {
             self.secondaryMenu.alpha = 0
@@ -214,6 +234,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                     self.secondaryMenu.removeFromSuperview()
                 }
         }
+        //NSLayoutConstraint.deactivateConstraints(secondaryMenuConstraints)
     }
     
     //
@@ -222,6 +243,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     func showSliderMenu() {
         // show slider menu for editing the filter parameter
+        hideSecondaryMenu()
+        print(filterButton.state)
+        print(filterButton)
         print("show slider")
         view.addSubview(sliderMenu)
         
@@ -252,6 +276,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     func hideSliderMenu() {
         // hide slider menu
+        print(filterButton.state)
+        print(filterButton)
         print("hide slider")
         NSLayoutConstraint.deactivateConstraints(sliderMenuConstraints)
         UIView.animateWithDuration(0.4, animations: {
@@ -264,21 +290,21 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     @IBAction func onSliderTouchUpInside(sender: AnyObject) {
-        print("onSliderTouchUpInside")
-        print(self.intensitySlider.value)
-        print(self.filterName)
-        let intensity = self.intensitySlider.value * 100
+        let intensity = self.intensitySlider.value
         var filter: FilterBase
-        if self.filterName == "More Red" {
-            print("make it redder")
-            filter = FilterRed(intensity: Double(intensity))
-            let rgbaImage = RGBAImage(image: imageView.image!)
-            let filtered = filter.run(rgbaImage!)
-            if let image = filtered.toUIImage() {
-                print("updating image")
-                crossFadeToImage(image)
-            }
+        switch filterName {
+            case "B/W":
+                filter = FilterGrayscale(intensity: Double(intensity))
+            case "Contrast":
+                filter = FilterIncreaseContrast(intensity: Double(intensity))
+            case "Red":
+                filter = FilterRed(intensity: Double(intensity))
+            case "RedGrayscale":
+                filter = FilterRedGrayscale(intensity: Double(intensity))
+            default:
+                filter = FilterGrayscale(intensity: Double(intensity))
         }
+        applyFilter(filter, image: originalImage)
     }
     
     func crossFadeToImage(image: UIImage) {
@@ -292,23 +318,45 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
 
     func onFilterComplete() {
-        // image filtering completed, update image and menus
+        // image filtering completed
         self.compareButton.enabled = true
         self.editButton.enabled = true
-        self.originalImage = addTextToImage("original", inImage: originalImage, atPoint: CGPointMake(20, 20))
-        self.editButton.enabled = true
+    }
+    
+    func applyFilter(filter: FilterBase, image: UIImage) {
+        // apply the filter
+        if let rgbaImage = RGBAImage(image: image) {
+            let filtered = filter.run(rgbaImage)
+            if let image = filtered.toUIImage() {
+                crossFadeToImage(image)
+                onFilterComplete()
+            }
+        }
     }
     
     @IBAction func onFilterRed(sender: AnyObject) {
         // apply the red filter to the image
-        let rgbaImage = RGBAImage(image: imageView.image!)
-        self.filterName = "More Red"
-        let filter = FilterRed()
-        let filtered: RGBAImage = filter.run(rgbaImage!)
-        if let image = filtered.toUIImage() {
-            crossFadeToImage(image)
-            onFilterComplete()
-        }
+        filterName = "Red"
+        let filter = FilterRed(intensity: 12.0)
+        applyFilter(filter, image: originalImage)
+    }
+    
+    @IBAction func onFilterRedGrayscale(sender: AnyObject) {
+        filterName = "RedGrayscale"
+        let filter = FilterRedGrayscale(intensity: 12.0)
+        applyFilter(filter, image: originalImage)
+    }
+    
+    @IBAction func onFilterIncreaseContrast(sender: AnyObject) {
+        filterName = "Contrast"
+        let filter = FilterIncreaseContrast(intensity: 12.0)
+        applyFilter(filter, image: originalImage)
+    }
+    
+    @IBAction func onFilterGrayscale(sender: AnyObject) {
+        filterName = "B/W"
+        let filter = FilterGrayscale(intensity: 12.0)
+        applyFilter(filter, image: originalImage)
     }
     
     @IBAction func onEdit(sender: AnyObject) {
@@ -325,7 +373,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         // compare to original image, if one exists
         if let original = originalImage {
             currentImage = imageView.image
-            crossFadeToImage(original)
+            // add a "original" label to the image before displaying
+            let labeledImage = addTextToImage("original", inImage: original, atPoint: CGPointMake(20, 20))
+            crossFadeToImage(labeledImage)
         }
     }
     
@@ -348,7 +398,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         doEndCompare()
     }
     
-    func imageViewLongPressed(longPress: UIGestureRecognizer) {
+    func overlayLongPressed(longPress: UIGestureRecognizer) {
         if (longPress.state == UIGestureRecognizerState.Ended) {
             doEndCompare()
         }else if (longPress.state == UIGestureRecognizerState.Began) {

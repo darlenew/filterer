@@ -91,8 +91,8 @@
                                     <constraint firstAttribute="trailing" secondItem="mAB-Ff-DGi" secondAttribute="trailing" id="ZVH-ld-wzx"/>
                                 </constraints>
                             </view>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="scenery" translatesAutoresizingMaskIntoConstraints="NO" id="aND-Em-4Dd">
-                                <rect key="frame" x="0.0" y="20" width="600" height="536"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="scenery" translatesAutoresizingMaskIntoConstraints="NO" id="aND-Em-4Dd">
+                                <rect key="frame" x="103" y="-62" width="600" height="536"/>
                                 <animations/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </imageView>
@@ -118,7 +118,6 @@
                         <outlet property="greenFilterButton" destination="axt-GK-a6m" id="eXl-Xj-0Xq"/>
                         <outlet property="imageView" destination="aND-Em-4Dd" id="vbi-rB-DhQ"/>
                         <outlet property="intensitySlider" destination="EiB-r2-Htn" id="xez-aD-xh6"/>
-                        <outlet property="purpleFilterButton" destination="7P8-VM-YCw" id="XRF-T7-cAe"/>
                         <outlet property="redFilterButton" destination="Drk-Kp-614" id="YJm-yc-UdK"/>
                         <outlet property="secondaryMenu" destination="ePS-oG-ZHP" id="Be7-JW-Iwe"/>
                         <outlet property="sliderMenu" destination="B9B-iP-V5C" id="ehC-Lg-c4x"/>
@@ -133,33 +132,37 @@
                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="n3M-NR-6VP">
                             <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Drk-Kp-614">
-                                    <rect key="frame" x="0.0" y="0.0" width="48" height="128"/>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Drk-Kp-614">
+                                    <rect key="frame" x="0.0" y="0.0" width="60" height="128"/>
                                     <animations/>
-                                    <state key="normal" title="Red"/>
+                                    <state key="normal" title="Red" image="loom0.png"/>
                                     <connections>
                                         <action selector="onFilterRed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="xJd-gm-2nz"/>
                                     </connections>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="axt-GK-a6m">
-                                    <rect key="frame" x="48" y="0.0" width="48" height="128"/>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="axt-GK-a6m">
+                                    <rect key="frame" x="60" y="0.0" width="60" height="128"/>
                                     <animations/>
-                                    <state key="normal" title="Green"/>
+                                    <state key="normal" title="Green" image="loom1.png"/>
+                                    <connections>
+                                        <action selector="onFilterRedGrayscale:" destination="BYZ-38-t0r" eventType="touchUpInside" id="2zf-E5-qIz"/>
+                                    </connections>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sNq-be-bSy">
-                                    <rect key="frame" x="96" y="0.0" width="48" height="128"/>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sNq-be-bSy">
+                                    <rect key="frame" x="120" y="0.0" width="60" height="128"/>
                                     <animations/>
-                                    <state key="normal" title="Blue"/>
+                                    <state key="normal" title="Blue" image="loom2.png"/>
+                                    <connections>
+                                        <action selector="onFilterIncreaseContrast:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Tvk-cE-Ahe"/>
+                                    </connections>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zUq-ef-bpc">
-                                    <rect key="frame" x="144" y="0.0" width="48" height="128"/>
+                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zUq-ef-bpc">
+                                    <rect key="frame" x="180" y="0.0" width="60" height="128"/>
                                     <animations/>
-                                    <state key="normal" title="Yellow"/>
-                                </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7P8-VM-YCw">
-                                    <rect key="frame" x="192" y="0.0" width="48" height="128"/>
-                                    <animations/>
-                                    <state key="normal" title="Purple"/>
+                                    <state key="normal" title="Yellow" image="loom3.png"/>
+                                    <connections>
+                                        <action selector="onFilterGrayscale:" destination="BYZ-38-t0r" eventType="touchUpInside" id="NgL-dC-ZXO"/>
+                                    </connections>
                                 </button>
                             </subviews>
                             <animations/>
@@ -196,10 +199,14 @@
                     </constraints>
                 </view>
             </objects>
-            <point key="canvasLocation" x="388" y="329"/>
+            <point key="canvasLocation" x="492" y="190"/>
         </scene>
     </scenes>
     <resources>
+        <image name="loom0.png" width="128" height="128"/>
+        <image name="loom1.png" width="128" height="128"/>
+        <image name="loom2.png" width="128" height="128"/>
+        <image name="loom3.png" width="128" height="128"/>
         <image name="scenery" width="100" height="134"/>
     </resources>
 </document>
