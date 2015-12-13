@@ -17,7 +17,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     // main menu
     @IBOutlet var bottomMenu: UIView!
-    @IBOutlet var filterButton: UIButton!
+    @IBOutlet weak var filterButton: UIButton!
     @IBOutlet weak var editButton: UIButton!
     @IBOutlet weak var compareButton: UIButton!
     @IBOutlet weak var shareButton: UIButton!
@@ -77,7 +77,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         // Setup the font specific variables
         var textColor: UIColor = UIColor.whiteColor()
-        var textFont: UIFont = UIFont(name: "Helvetica Bold", size: 24)!
+        var textFont: UIFont = UIFont(name: "Helvetica Bold", size: 18)!
         
         //Setup the image context using the passed image.
         UIGraphicsBeginImageContext(inImage.size)
@@ -174,20 +174,23 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     // MARK: Filter Menu
-    @IBAction func onFilter(sender: UIButton) {
+    @IBAction func onFilter(sender: AnyObject) {
         print(sender)
-        if (sender.selected) {
-            hideSecondaryMenu()
-            sender.selected = false
-        } else {
-            // save the original image, if it hasn't been saved already
-            // this may be the case when initially loading the app using the default image
-            if originalImage == nil {
-                originalImage = imageView.image!
-            }
-            showSecondaryMenu()
-            sender.selected = true
-        }
+        hideSliderMenu()
+        showSecondaryMenu()
+
+//        if (sender.selected) {
+//            hideSecondaryMenu()
+//            sender.selected = false
+//        } else {
+//            // save the original image, if it hasn't been saved already
+//            // this may be the case when initially loading the app using the default image
+//            if originalImage == nil {
+//                originalImage = imageView.image!
+//            }
+//            showSecondaryMenu()
+//            sender.selected = true
+//        }
     }
     
     //
@@ -208,8 +211,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         secondaryMenuConstraints = [bottomConstraint, leftConstraint, rightConstraint, heightConstraint]
         NSLayoutConstraint.activateConstraints(secondaryMenuConstraints)
-        
-
         
         self.secondaryMenu.alpha = 0
         UIView.animateWithDuration(0.4) {
@@ -304,7 +305,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             default:
                 filter = FilterGrayscale(intensity: Double(intensity))
         }
-        applyFilter(filter, image: originalImage)
+        applyFilter(filter)
     }
     
     func crossFadeToImage(image: UIImage) {
@@ -323,9 +324,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         self.editButton.enabled = true
     }
     
-    func applyFilter(filter: FilterBase, image: UIImage) {
-        // apply the filter
-        if let rgbaImage = RGBAImage(image: image) {
+    func applyFilter(filter: FilterBase) {
+        // apply the filter to the original image
+        if originalImage == nil {
+            originalImage = imageView.image!
+        }
+        if let rgbaImage = RGBAImage(image: originalImage) {
             let filtered = filter.run(rgbaImage)
             if let image = filtered.toUIImage() {
                 crossFadeToImage(image)
@@ -338,25 +342,25 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         // apply the red filter to the image
         filterName = "Red"
         let filter = FilterRed(intensity: 12.0)
-        applyFilter(filter, image: originalImage)
+        applyFilter(filter)
     }
     
     @IBAction func onFilterRedGrayscale(sender: AnyObject) {
         filterName = "RedGrayscale"
         let filter = FilterRedGrayscale(intensity: 12.0)
-        applyFilter(filter, image: originalImage)
+        applyFilter(filter)
     }
     
     @IBAction func onFilterIncreaseContrast(sender: AnyObject) {
         filterName = "Contrast"
         let filter = FilterIncreaseContrast(intensity: 12.0)
-        applyFilter(filter, image: originalImage)
+        applyFilter(filter)
     }
     
     @IBAction func onFilterGrayscale(sender: AnyObject) {
         filterName = "B/W"
         let filter = FilterGrayscale(intensity: 12.0)
-        applyFilter(filter, image: originalImage)
+        applyFilter(filter)
     }
     
     @IBAction func onEdit(sender: AnyObject) {

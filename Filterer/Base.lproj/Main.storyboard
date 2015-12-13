@@ -33,15 +33,12 @@
                                                     <action selector="onNewPhoto:" destination="BYZ-38-t0r" eventType="touchUpInside" id="CCi-qF-5AC"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C6B-1F-j0K">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yA8-Fa-ULI">
                                                 <rect key="frame" x="120" y="0.0" width="120" height="44"/>
                                                 <animations/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="44" id="9TF-bC-3of"/>
-                                                </constraints>
                                                 <state key="normal" title="Filter"/>
                                                 <connections>
-                                                    <action selector="onFilter:" destination="BYZ-38-t0r" eventType="touchUpInside" id="bde-Ke-RWf"/>
+                                                    <action selector="onFilter:" destination="BYZ-38-t0r" eventType="touchUpInside" id="i1h-7g-FJd"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Leg-ry-Zqw">
@@ -114,7 +111,7 @@
                         <outlet property="bottomMenu" destination="JNF-wb-wwY" id="jTm-2q-PDu"/>
                         <outlet property="compareButton" destination="tPg-2N-f93" id="2Zg-kj-kEc"/>
                         <outlet property="editButton" destination="Leg-ry-Zqw" id="ft0-O6-9h7"/>
-                        <outlet property="filterButton" destination="Leg-ry-Zqw" id="hrD-Gw-VRL"/>
+                        <outlet property="filterButton" destination="yA8-Fa-ULI" id="9xL-1T-rge"/>
                         <outlet property="greenFilterButton" destination="axt-GK-a6m" id="eXl-Xj-0Xq"/>
                         <outlet property="imageView" destination="aND-Em-4Dd" id="vbi-rB-DhQ"/>
                         <outlet property="intensitySlider" destination="EiB-r2-Htn" id="xez-aD-xh6"/>
